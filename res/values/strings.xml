@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ModeSetting</string>
+    <string name="title">选择模式</string>
+    <string name="add">+</string>
+    <string name="set">设置隐藏项目</string>
+    <string name="delete">删除</string>
+    <string name="app">应用</string>
+</resources>
