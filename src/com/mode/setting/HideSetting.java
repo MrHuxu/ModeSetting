@@ -5,14 +5,9 @@ import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.widget.ListView;
 import android.widget.TabHost;
-import android.widget.TextView;
-import android.view.View;
 import android.widget.TabWidget;
-import android.widget.ProgressBar;
-import android.content.DialogInterface;
-import android.app.ProgressDialog;
+import android.widget.TextView;
 
 public class HideSetting extends TabActivity {
 

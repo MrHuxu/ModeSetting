@@ -1,37 +1,21 @@
 //@MrHuxu the author
 package com.mode.setting;
 
-import java.util.ArrayList;
-import java.util.List;
-import android.content.Intent;
-import android.view.View.OnClickListener;
-import android.app.IntentService;
 import android.app.Activity;
-import android.os.Bundle;
-import android.widget.TextView;
-import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
-import android.widget.LinearLayout;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.KeyEvent;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.Spinner;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
+import android.content.ContentValues;
 import android.content.DialogInterface;
-import android.view.Gravity;
-import android.widget.EditText;
-import android.util.Log;
-import android.util.LogPrinter;
-import android.view.MotionEvent;
-import android.widget.AdapterView;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
-import android.content.ContentValues;
-import android.widget.SimpleCursorAdapter;
+import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.View;
+import android.widget.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ModeSetting extends Activity {
 

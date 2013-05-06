@@ -2,16 +2,11 @@
 package com.mode.setting;
 
 import android.app.Activity;
-import android.os.Bundle;
-import android.widget.ListView;
-import android.widget.ArrayAdapter;
-import java.util.ArrayList;
-import java.util.List;
-import android.provider.ContactsContract;
-import android.provider.ContactsContract.PhoneLookup;
 import android.database.Cursor;
-import android.content.ContentResolver;
+import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
