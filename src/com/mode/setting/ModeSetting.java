@@ -52,10 +52,9 @@ public class ModeSetting extends Activity {
         db.execSQL("create table if not exists mode_db(_id integer primary key autoincrement, mode_name varchar(50))");
 
 
-
         Button add = (Button) findViewById(R.id.add);
         newItem = new AlertDialog.Builder(this);
-         //Here is a alertdialog to add a new item into the spinner
+        //Here is a alert dialog to add a new item into the spinner
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View source) {
@@ -78,7 +77,7 @@ public class ModeSetting extends Activity {
                 });
                 newItem.create().show();
             }
-        });        
+        });
 
         final ArrayAdapter options = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
         options.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -122,7 +121,7 @@ public class ModeSetting extends Activity {
 
             public void onNothingSelected(AdapterView<?> parent) {
             }
-        });         
+        });
 
         ifDelete = new AlertDialog.Builder(this);
         delete.setOnClickListener(new View.OnClickListener() {
@@ -152,7 +151,7 @@ public class ModeSetting extends Activity {
             @Override
             public void onClick(View source) {
                 Intent intent = new Intent(ModeSetting.this, HideSetting.class);
-                startActivity(intent);      
+                startActivity(intent);
             }
         });
     }

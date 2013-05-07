@@ -20,13 +20,17 @@ public class HideSetting extends TabActivity {
         TabHost tabHost = getTabHost();
 
         LayoutInflater.from(this).inflate(R.layout.main, tabHost.getTabContentView(), true);
-        //show the contact list
         tabHost.addTab(tabHost.newTabSpec("tab1")
-                .setIndicator("联系人")
+                .setIndicator("通话记录")
                 .setContent(contact_intent));
-        //show the app list
         tabHost.addTab(tabHost.newTabSpec("tab2")
+                .setIndicator("短信")
+                .setContent(contact_intent));
+        tabHost.addTab(tabHost.newTabSpec("tab3")
                 .setIndicator("应用程序")
+                .setContent(app_intent));
+        tabHost.addTab(tabHost.newTabSpec("tab4")
+                .setIndicator("数据")
                 .setContent(app_intent));
 
         TabWidget tabWidget = this.getTabWidget();

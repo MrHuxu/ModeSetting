@@ -17,8 +17,8 @@
         <activity android:name="ContactList"
                   android:label="ContactList">
         </activity>
-        <activity android:name="AppList"
-                  android:label="AppList">
+        <activity android:name=".AppList"
+                android:label="tmplist">
         </activity>
     </application>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>

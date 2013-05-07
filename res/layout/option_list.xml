@@ -1,45 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
->
-    <RelativeLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-    >
-        <TextView 
-            android:id="@+id/name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:textSize="30dp"
-        />
-        <TextView
-            android:id="@+id/option_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="0dp"
-            android:layout_marginTop="10dp"
-            android:textSize="17dp"
-        />
-        <TextView
-            android:id="@+id/option_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="55dp"
-            android:layout_marginTop="10dp"
-            android:textSize="17dp"
-        />
-    </RelativeLayout>
-    <ListView
-        android:id="@+id/list"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-    />
-</LinearLayout>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="horizontal" >
 
+    <TextView
+            android:id="@+id/tv"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical" />
+
+    <LinearLayout
+            android:id="@+id/line"
+            android:layout_width="fill_parent"
+            android:layout_height="35dp"
+            android:layout_below="@+id/tv"
+            android:orientation="horizontal" >
+
+        <Button
+                android:id="@+id/bt_selectall"
+                android:layout_width="80dp"
+                android:layout_height="fill_parent"
+                android:text="全选" />
+
+        <Button
+                android:id="@+id/bt_cancleselectall"
+                android:layout_width="80dp"
+                android:layout_height="fill_parent"
+                android:text="反选" />
+
+
+        <Button
+                android:id="@+id/bt_deselectall"
+                android:layout_width="80dp"
+                android:layout_height="fill_parent"
+                android:text="取消选择" />
+
+    </LinearLayout>
+
+    <ListView
+            android:id="@+id/lv"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@+id/line" />
+
+</RelativeLayout>
