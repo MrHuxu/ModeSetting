@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.*;
@@ -48,9 +49,6 @@ public class ModeSetting extends Activity {
                 list.add(cursor.getString(1));
             }
         }
-        db.execSQL("drop table mode_db");
-        db.execSQL("create table if not exists mode_db(_id integer primary key autoincrement, mode_name varchar(50))");
-
 
         Button add = (Button) findViewById(R.id.add);
         newItem = new AlertDialog.Builder(this);
@@ -132,6 +130,8 @@ public class ModeSetting extends Activity {
                 ifDelete.setPositiveButton("删除", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        String dp_tbl = "drop table if exists " + spinner.getSelectedItem().toString();
+                        db.execSQL(dp_tbl);
                         delItem = spinner.getSelectedItemPosition();
                         list.remove(delItem);
                         spinner.setAdapter(options);
@@ -151,16 +151,19 @@ public class ModeSetting extends Activity {
             @Override
             public void onClick(View source) {
                 Intent intent = new Intent(ModeSetting.this, HideSetting.class);
+                intent.putExtra("spn", spinner.getSelectedItem().toString());
                 startActivity(intent);
             }
         });
     }
 
-    //create a keyevent to judeg if the back_key is clicked
+    //create a keyevent to judge if the back_key is clicked
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK
                 && event.getRepeatCount() == 0) {
+            db.execSQL("drop table mode_db");
+            db.execSQL("create table if not exists mode_db(_id integer primary key autoincrement, mode_name varchar(50))");
             mode_count = list.size();
             if (mode_count != 1) {
                 for (int i = 1; i < mode_count; i++) {

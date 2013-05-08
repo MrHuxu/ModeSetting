@@ -3,35 +3,67 @@ package com.mode.setting;
 
 import android.app.TabActivity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
 
 public class HideSetting extends TabActivity {
+    String crt_tbl;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Intent contact_intent = new Intent(this, ContactList.class);
-        Intent app_intent = new Intent(this, AppList.class);
+        String db_name = this.getIntent().getStringExtra("spn");
+        SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(this.getFilesDir().toString() + "/my.db3", null);
+        crt_tbl = "create table if not exists " + db_name + "(_id integer primary key autoincrement, cl varchar(50), mms varchar(50), sw varchar(50), dt varchar(50))";
+        Log.v("haha", crt_tbl);
+        db.execSQL(crt_tbl);
+
+
+        Intent cl_intent = new Intent(this, OptionList.class);
+        Bundle cl_bundle = new Bundle();
+        cl_bundle.putString("db_name", db_name);
+        cl_bundle.putInt("type", 1);
+        cl_intent.putExtra("bd", cl_bundle);
+
+        Intent mms_intent = new Intent(this, OptionList.class);
+        Bundle mms_bundle = new Bundle();
+        mms_bundle.putString("db_name", db_name);
+        mms_bundle.putInt("type", 2);
+        mms_intent.putExtra("bd", mms_bundle);
+
+        Intent sw_intent = new Intent(this, OptionList.class);
+        Bundle sw_bundle = new Bundle();
+        sw_bundle.putString("db_name", db_name);
+        sw_bundle.putInt("type", 3);
+        sw_intent.putExtra("bd", sw_bundle);
+
+        Intent dt_intent = new Intent(this, OptionList.class);
+        Bundle dt_bundle = new Bundle();
+        dt_bundle.putString("db_name", db_name);
+        dt_bundle.putInt("type", 4);
+        dt_intent.putExtra("bd", dt_bundle);
+
         TabHost tabHost = getTabHost();
 
         LayoutInflater.from(this).inflate(R.layout.main, tabHost.getTabContentView(), true);
         tabHost.addTab(tabHost.newTabSpec("tab1")
                 .setIndicator("通话记录")
-                .setContent(contact_intent));
+                .setContent(cl_intent));
         tabHost.addTab(tabHost.newTabSpec("tab2")
                 .setIndicator("短信")
-                .setContent(contact_intent));
+                .setContent(mms_intent));
         tabHost.addTab(tabHost.newTabSpec("tab3")
                 .setIndicator("应用程序")
-                .setContent(app_intent));
+                .setContent(sw_intent));
         tabHost.addTab(tabHost.newTabSpec("tab4")
                 .setIndicator("数据")
-                .setContent(app_intent));
+                .setContent(dt_intent));
 
         TabWidget tabWidget = this.getTabWidget();
         for (int i = 0; i < tabWidget.getChildCount(); i++) {

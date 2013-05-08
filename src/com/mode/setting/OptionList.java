@@ -2,10 +2,13 @@
 package com.mode.setting;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.view.KeyEvent;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
@@ -15,15 +18,21 @@ import com.mode.setting.MyAdapter.ViewHolder;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AppList extends Activity {
+public class OptionList extends Activity {
     private ListView lv;
     private MyAdapter mAdapter;
     private ArrayList<String> list;
     private Button bt_selectall;
     private Button bt_cancel;
     private Button bt_deselectall;
+    private Button bt_savetodb;
     private int checkNum; // 记录选中的条目数量
     private TextView tv_show;// 用于显示选中的条目数量
+    ContentValues values = new ContentValues();
+    SQLiteDatabase db;
+    Bundle bundle;
+    String db_name;
+    int type;
 
     /**
      * Called when the activity is first created.
@@ -38,14 +47,19 @@ public class AppList extends Activity {
         bt_selectall = (Button) findViewById(R.id.bt_selectall);
         bt_cancel = (Button) findViewById(R.id.bt_cancleselectall);
         bt_deselectall = (Button) findViewById(R.id.bt_deselectall);
+        bt_savetodb = (Button) findViewById(R.id.save_to_db);
         tv_show = (TextView) findViewById(R.id.tv);
+        db = SQLiteDatabase.openOrCreateDatabase(this.getFilesDir().toString() + "/my.db3", null);
+        bundle = this.getIntent().getBundleExtra("bd");
+        db_name = bundle.getString("db_name");
+        type = bundle.getInt("type");
         list = new ArrayList<String>();
         // 为Adapter准备数据
         initDate();
         // 实例化自定义的MyAdapter
         mAdapter = new MyAdapter(list, this);
         // 绑定Adapter
-        LinearLayout line = (LinearLayout)findViewById(R.id.line);
+        LinearLayout line = (LinearLayout) findViewById(R.id.line);
         line.setBackgroundColor(0xff000000);
         lv.setCacheColorHint(0);
         lv.setBackgroundColor(0xff000000);
@@ -101,6 +115,32 @@ public class AppList extends Activity {
             }
         });
 
+        //保存按钮的回调接口
+        bt_savetodb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 遍历list的长度，将已选的项存入数据库
+                String db_name = bundle.getString("db_name");
+                int type = bundle.getInt("type");
+                for (int i = 0; i < list.size(); i++) {
+                    if (MyAdapter.getIsSelected().get(i)) {
+                        if (type == 1) {
+                            values.put("cl", list.get(i));
+                            db.insert(db_name, null, values);
+                        } else if (type == 2) {
+                            values.put("mms", list.get(i));
+                            db.insert(db_name, null, values);
+                        } else if (type == 3) {
+                            values.put("sw", list.get(i));
+                            db.insert(db_name, null, values);
+                        }else if (type == 4) {
+                            values.put("dt", list.get(i));
+                            db.insert(db_name, null, values);
+                        }
+                    }
+                }
+            }
+        });
         // 绑定listView的监听器
         lv.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -126,14 +166,24 @@ public class AppList extends Activity {
 
     // 初始化数据
     private void initDate() {
-        List<PackageInfo> packages = getPackageManager().getInstalledPackages(0);
-        int i;
-        for (i = 0; i < packages.size(); i++) {
-            PackageInfo packageInfo = packages.get(i);
-            String tmpStr = new String();
-            if ((packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
-                tmpStr = packageInfo.applicationInfo.loadLabel(getPackageManager()).toString();
-                list.add(tmpStr);
+        if (type == 1 || type == 2) {
+            Cursor cursor = getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+            startManagingCursor(cursor);
+            while (cursor.moveToNext()) {
+                int NameColumn = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
+                String con_tmp = cursor.getString(NameColumn);
+                list.add(con_tmp);
+            }
+        } else if (type == 3 || type == 4) {
+            List<PackageInfo> packages = getPackageManager().getInstalledPackages(0);
+            int i;
+            for (i = 0; i < packages.size(); i++) {
+                PackageInfo packageInfo = packages.get(i);
+                String tmpStr = new String();
+                if ((packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
+                    tmpStr = packageInfo.applicationInfo.loadLabel(getPackageManager()).toString();
+                    list.add(tmpStr);
+                }
             }
         }
     }
@@ -144,18 +194,5 @@ public class AppList extends Activity {
         mAdapter.notifyDataSetChanged();
         // TextView显示最新的选中数目
         tv_show.setText("已选中" + checkNum + "项");
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK
-                && event.getRepeatCount() == 0) {
-            for (int i = 0; i < list.size(); i++) {
-                if (MyAdapter.getIsSelected().get(i)) {
-                }
-            }
-            return super.onKeyDown(keyCode, event);
-        }
-        return true;
     }
 }

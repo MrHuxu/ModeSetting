@@ -14,10 +14,7 @@
         <activity android:name="HideSetting"
                   android:label="HideSetting">
         </activity>
-        <activity android:name="ContactList"
-                  android:label="ContactList">
-        </activity>
-        <activity android:name=".AppList"
+        <activity android:name=".OptionList"
                 android:label="tmplist">
         </activity>
     </application>

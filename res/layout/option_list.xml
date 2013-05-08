@@ -34,7 +34,13 @@
                 android:id="@+id/bt_deselectall"
                 android:layout_width="80dp"
                 android:layout_height="fill_parent"
-                android:text="取消选择" />
+                android:text="取消" />
+        <Button
+                android:id="@+id/save_to_db"
+                android:layout_width="80dp"
+                android:layout_height="fill_parent"
+                android:text="保存"
+            />
 
     </LinearLayout>
 
