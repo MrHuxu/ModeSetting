@@ -15,7 +15,7 @@
                   android:label="HideSetting">
         </activity>
         <activity android:name=".OptionList"
-                android:label="tmplist">
+                android:label="OptionList">
         </activity>
     </application>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
