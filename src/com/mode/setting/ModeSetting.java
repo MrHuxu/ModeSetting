@@ -43,6 +43,8 @@ public class ModeSetting extends Activity {
 
         db = SQLiteDatabase.openOrCreateDatabase(this.getFilesDir().toString() + "/my.db3", null);
         db.execSQL("create table if not exists mode_db(_id integer primary key autoincrement, mode_name varchar(50))");
+        db.execSQL("create table if not exists hd_cl(_id integer primary key autoincrement, number integer, date integer, duration integer, type integer, new integer, name text, contactid integer, normalized_number varchar(50))");
+        db.execSQL("create table if not exists hd_sms(_id integer primary key autoincrement, thread_id integer, address text, person integer, date integer, read integer, status integer, type integer, body text)");
         Cursor cursor = db.rawQuery("select * from mode_db", null);
         while (cursor.moveToNext()) {
             if (cursor.getString(1) != "1") {
@@ -130,8 +132,14 @@ public class ModeSetting extends Activity {
                 ifDelete.setPositiveButton("删除", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String dp_tbl = "drop table if exists " + spinner.getSelectedItem().toString();
-                        db.execSQL(dp_tbl);
+                        String dp_tbl1 = "drop table if exists " + spinner.getSelectedItem().toString() + "_cl";
+                        db.execSQL(dp_tbl1);
+                        String dp_tbl2 = "drop table if exists " + spinner.getSelectedItem().toString() + "_sms";
+                        db.execSQL(dp_tbl2);
+                        String dp_tbl3 = "drop table if exists " + spinner.getSelectedItem().toString() + "_sw";
+                        db.execSQL(dp_tbl3);
+                        String dp_tbl4 = "drop table if exists " + spinner.getSelectedItem().toString() + "_dt";
+                        db.execSQL(dp_tbl4);
                         delItem = spinner.getSelectedItemPosition();
                         list.remove(delItem);
                         spinner.setAdapter(options);

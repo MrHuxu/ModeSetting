@@ -3,27 +3,18 @@ package com.mode.setting;
 
 import android.app.TabActivity;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
 
 public class HideSetting extends TabActivity {
-    String crt_tbl;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         String db_name = this.getIntent().getStringExtra("spn");
-        SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(this.getFilesDir().toString() + "/my.db3", null);
-        crt_tbl = "create table if not exists " + db_name + "(_id integer primary key autoincrement, cl varchar(50), mms varchar(50), sw varchar(50), dt varchar(50))";
-        Log.v("haha", crt_tbl);
-        db.execSQL(crt_tbl);
-
 
         Intent cl_intent = new Intent(this, OptionList.class);
         Bundle cl_bundle = new Bundle();

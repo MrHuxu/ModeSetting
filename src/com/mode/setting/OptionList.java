@@ -3,12 +3,15 @@ package com.mode.setting;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.ContentResolver;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.provider.CallLog;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
@@ -26,13 +29,21 @@ public class OptionList extends Activity {
     private Button bt_cancel;
     private Button bt_deselectall;
     private Button bt_savetodb;
+    private Button app_settings;
     private int checkNum; // 记录选中的条目数量
     private TextView tv_show;// 用于显示选中的条目数量
     ContentValues values = new ContentValues();
+    ContentValues cl_values = new ContentValues();
     SQLiteDatabase db;
     Bundle bundle;
-    String db_name;
     int type;
+    String crt_tbl;
+    String dp_tbl;
+    String df_dbname;
+    Cursor df_cursor;
+    ArrayList df_list = new ArrayList();
+    ArrayList hdcl_list = new ArrayList();
+    ArrayList cl_list = new ArrayList();
 
     /**
      * Called when the activity is first created.
@@ -48,10 +59,10 @@ public class OptionList extends Activity {
         bt_cancel = (Button) findViewById(R.id.bt_cancleselectall);
         bt_deselectall = (Button) findViewById(R.id.bt_deselectall);
         bt_savetodb = (Button) findViewById(R.id.save_to_db);
+        app_settings = (Button) findViewById(R.id.app_settings);
         tv_show = (TextView) findViewById(R.id.tv);
         db = SQLiteDatabase.openOrCreateDatabase(this.getFilesDir().toString() + "/my.db3", null);
         bundle = this.getIntent().getBundleExtra("bd");
-        db_name = bundle.getString("db_name");
         type = bundle.getInt("type");
         list = new ArrayList<String>();
         // 为Adapter准备数据
@@ -64,6 +75,32 @@ public class OptionList extends Activity {
         lv.setCacheColorHint(0);
         lv.setBackgroundColor(0xff000000);
         lv.setAdapter(mAdapter);
+
+
+        //初始化列表中的checkbox
+        if (type == 1) {
+            df_dbname = bundle.getString("db_name") + "_cl";
+        } else if (type == 2) {
+            df_dbname = bundle.getString("db_name") + "_sms";
+        } else if (type == 3) {
+            df_dbname = bundle.getString("db_name") + "_sw";
+        } else if (type == 4) {
+            df_dbname = bundle.getString("db_name") + "_dt";
+        }
+        db.execSQL("create table if not exists " + df_dbname + "(_id integer primary key autoincrement, hd varchar(50))");
+        df_cursor = db.query(df_dbname, new String[]{"hd"}, null, null, null, null, null, null);
+        while (df_cursor.moveToNext()) {
+            String df_tmp = df_cursor.getString(0);
+            df_list.add(df_tmp);
+        }
+        for (int i = 0; i < list.size(); i++) {
+            if (df_list.contains(list.get(i).toString())) {
+                MyAdapter.getIsSelected().put(i, true);
+                checkNum++;
+            }
+        }
+        df_cursor.close();
+        dataChanged();
 
         // 全选按钮的回调接口
         bt_selectall.setOnClickListener(new OnClickListener() {
@@ -120,27 +157,61 @@ public class OptionList extends Activity {
             @Override
             public void onClick(View v) {
                 // 遍历list的长度，将已选的项存入数据库
-                String db_name = bundle.getString("db_name");
                 int type = bundle.getInt("type");
+                dp_tbl = "drop table if exists " + df_dbname;
+                crt_tbl = "create table if not exists " + df_dbname + "(_id integer primary key autoincrement, hd varchar(50))";
+                db.execSQL(dp_tbl);
+                db.execSQL(crt_tbl);
                 for (int i = 0; i < list.size(); i++) {
                     if (MyAdapter.getIsSelected().get(i)) {
-                        if (type == 1) {
-                            values.put("cl", list.get(i));
-                            db.insert(db_name, null, values);
-                        } else if (type == 2) {
-                            values.put("mms", list.get(i));
-                            db.insert(db_name, null, values);
-                        } else if (type == 3) {
-                            values.put("sw", list.get(i));
-                            db.insert(db_name, null, values);
-                        }else if (type == 4) {
-                            values.put("dt", list.get(i));
-                            db.insert(db_name, null, values);
-                        }
+                        values.put("hd", list.get(i));
+                        db.insert(df_dbname, null, values);
                     }
+                }
+
+            }
+        });
+
+        //应用按钮的回调接口
+        app_settings.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //当在通话记录界面按下应用按钮时
+                if (type == 1) {
+                    db.execSQL("drop table hd_cl");
+                    db.execSQL("create table if not exists hd_cl(_id integer primary key autoincrement, number integer, date integer, duration integer, type integer, new integer, name text, contactid integer, normalized_number varchar(50))");
+                    Cursor hdcl_cur = db.query(df_dbname, null, null, null, null, null, null);
+                    while (hdcl_cur.moveToNext()) {
+                        int hdname_cl = hdcl_cur.getColumnIndex("hd");
+                        hdcl_list.add(hdcl_cur.getString(hdname_cl));
+                    }
+                    Cursor cl_cur = getContentResolver().query(CallLog.Calls.CONTENT_URI, null, null, null, CallLog.Calls.DEFAULT_SORT_ORDER);
+                    while (cl_cur.moveToNext()) {
+                        int name_cl = cl_cur.getColumnIndex(CallLog.Calls.CACHED_NAME);
+                        String name = cl_cur.getString(name_cl);
+                        if (!cl_list.contains(name))
+                            cl_list.add(name);
+                        if (hdcl_list.contains(name)) {
+                            cl_values.put("number", cl_cur.getString(cl_cur.getColumnIndex("number")));
+                            cl_values.put("date", cl_cur.getString(cl_cur.getColumnIndex("date")));
+                            cl_values.put("duration", cl_cur.getInt(cl_cur.getColumnIndex("duration")));
+                            cl_values.put("type", cl_cur.getInt(cl_cur.getColumnIndex("type")));
+                            cl_values.put("new", cl_cur.getInt(cl_cur.getColumnIndex("new")));
+                            cl_values.put("name", cl_cur.getString(cl_cur.getColumnIndex("name")));
+                            cl_values.put("contactid", cl_cur.getInt(cl_cur.getColumnIndex("contactid")));
+                            cl_values.put("normalized_number", cl_cur.getString(cl_cur.getColumnIndex("normalized_number")));
+                            db.insert("hd_cl", null, cl_values);
+                            getContentResolver().delete(CallLog.Calls.CONTENT_URI, "name=?", new String[]{cl_cur.getString(cl_cur.getColumnIndex("name"))});
+                        }
+
+                    }
+                } else {
+                    Log.v("test", "Victory");
                 }
             }
         });
+
+
         // 绑定listView的监听器
         lv.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -174,6 +245,7 @@ public class OptionList extends Activity {
                 String con_tmp = cursor.getString(NameColumn);
                 list.add(con_tmp);
             }
+            cursor.close();
         } else if (type == 3 || type == 4) {
             List<PackageInfo> packages = getPackageManager().getInstalledPackages(0);
             int i;
