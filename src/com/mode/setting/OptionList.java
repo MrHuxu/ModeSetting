@@ -3,14 +3,14 @@ package com.mode.setting;
 
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.ContentResolver;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.provider.CallLog;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,16 +34,22 @@ public class OptionList extends Activity {
     private TextView tv_show;// 用于显示选中的条目数量
     ContentValues values = new ContentValues();
     ContentValues cl_values = new ContentValues();
+    ContentValues recl_values = new ContentValues();
+    ContentValues sms_values = new ContentValues();
+    ContentValues resms_values = new ContentValues();
     SQLiteDatabase db;
     Bundle bundle;
     int type;
-    String crt_tbl;
-    String dp_tbl;
-    String df_dbname;
-    Cursor df_cursor;
-    ArrayList df_list = new ArrayList();
-    ArrayList hdcl_list = new ArrayList();
-    ArrayList cl_list = new ArrayList();
+    String crt_tbl;           //创建表用的字符串
+    String dp_tbl;          //删除表要用的字符串
+    String df_dbname;          //当前使用来存储的表的名字
+    Cursor df_cursor;           //扫描当前使用的数据库的cursor
+    ArrayList df_list = new ArrayList();          //数据库中已经存在的值，df：default
+    ArrayList hdcl_list = new ArrayList();           //在calllog中已经选中的项
+    ArrayList hvhdcl_list = new ArrayList();         //在hd_cl表中已经存在的项的name属性
+    ArrayList hdsms_list = new ArrayList();
+    ArrayList hdsmsnum_list = new ArrayList();
+    ArrayList hvhdsmsnum_list = new ArrayList();
 
     /**
      * Called when the activity is first created.
@@ -177,20 +183,23 @@ public class OptionList extends Activity {
             @Override
             public void onClick(View view) {
                 //当在通话记录界面按下应用按钮时
+                String name;
                 if (type == 1) {
-                    db.execSQL("drop table hd_cl");
-                    db.execSQL("create table if not exists hd_cl(_id integer primary key autoincrement, number integer, date integer, duration integer, type integer, new integer, name text, contactid integer, normalized_number varchar(50))");
+                    //遍历当前选项，获得需要隐藏的联系人名
                     Cursor hdcl_cur = db.query(df_dbname, null, null, null, null, null, null);
                     while (hdcl_cur.moveToNext()) {
                         int hdname_cl = hdcl_cur.getColumnIndex("hd");
                         hdcl_list.add(hdcl_cur.getString(hdname_cl));
                     }
+                    //遍历已经隐藏的数据库，获得已经隐藏的联系人名
+                    Cursor hvhdcl_cur = db.query("hd_cl", null, null, null, null, null, null);
+                    while (hvhdcl_cur.moveToNext()) {
+                        hvhdcl_list.add(hvhdcl_cur.getString(hvhdcl_cur.getColumnIndex("name")));
+                    }
+                    //将需要隐藏的通话记录从系统数据库中取出，存入hd_cl表
                     Cursor cl_cur = getContentResolver().query(CallLog.Calls.CONTENT_URI, null, null, null, CallLog.Calls.DEFAULT_SORT_ORDER);
                     while (cl_cur.moveToNext()) {
-                        int name_cl = cl_cur.getColumnIndex(CallLog.Calls.CACHED_NAME);
-                        String name = cl_cur.getString(name_cl);
-                        if (!cl_list.contains(name))
-                            cl_list.add(name);
+                        name = cl_cur.getString(cl_cur.getColumnIndex(CallLog.Calls.CACHED_NAME));
                         if (hdcl_list.contains(name)) {
                             cl_values.put("number", cl_cur.getString(cl_cur.getColumnIndex("number")));
                             cl_values.put("date", cl_cur.getString(cl_cur.getColumnIndex("date")));
@@ -201,12 +210,123 @@ public class OptionList extends Activity {
                             cl_values.put("contactid", cl_cur.getInt(cl_cur.getColumnIndex("contactid")));
                             cl_values.put("normalized_number", cl_cur.getString(cl_cur.getColumnIndex("normalized_number")));
                             db.insert("hd_cl", null, cl_values);
-                            getContentResolver().delete(CallLog.Calls.CONTENT_URI, "name=?", new String[]{cl_cur.getString(cl_cur.getColumnIndex("name"))});
+                            getContentResolver().delete(CallLog.Calls.CONTENT_URI, "_id=?", new String[]{Integer.toString(cl_cur.getInt(cl_cur.getColumnIndex("_id")))});
                         }
 
                     }
+                    //将取消隐藏的通话记录从hd_cl表获取存入系统数据库
+                    if (hvhdcl_cur.moveToFirst()) {
+                        while (hvhdcl_cur.moveToNext()) {
+                            name = hvhdcl_cur.getString(hvhdcl_cur.getColumnIndex("name"));
+                            if (!hdcl_list.contains(name)) {
+                                recl_values.put(CallLog.Calls.NUMBER, hvhdcl_cur.getString(hvhdcl_cur.getColumnIndex("number")));
+                                recl_values.put(CallLog.Calls.DATE, hvhdcl_cur.getString(hvhdcl_cur.getColumnIndex("date")));
+                                recl_values.put(CallLog.Calls.DURATION, hvhdcl_cur.getInt(hvhdcl_cur.getColumnIndex("duration")));
+                                recl_values.put(CallLog.Calls.CACHED_NAME, hvhdcl_cur.getString(hvhdcl_cur.getColumnIndex("name")));
+                                recl_values.put(CallLog.Calls.TYPE, hvhdcl_cur.getInt(hvhdcl_cur.getColumnIndex("type")));
+                                recl_values.put(CallLog.Calls.CACHED_NUMBER_TYPE, 2);
+                                recl_values.put(CallLog.Calls._ID, hvhdcl_cur.getInt(hvhdcl_cur.getColumnIndex("contactid")));
+                                getContentResolver().insert(CallLog.Calls.CONTENT_URI, recl_values);
+                            }
+                        }
+                    }
+                    //得到现在存在与hd_cl表中的项，并且和hdcl_list对比，将取消隐藏的通话记录从hd_cl表中删除
+                    hvhdcl_list.clear();
+                    if (hvhdcl_cur.moveToFirst()) {
+                        while (hvhdcl_cur.moveToNext()) {
+                            if (!hvhdcl_list.contains(hvhdcl_cur.getString(hvhdcl_cur.getColumnIndex("name"))))
+                                hvhdcl_list.add(hvhdcl_cur.getString(hvhdcl_cur.getColumnIndex("name")));
+                        }
+                    }
+                    for (int i = 0; i < hvhdcl_list.size(); i++) {
+                        if (!hdcl_list.contains(hvhdcl_list.get(i).toString()))
+                            db.delete("hd_cl", "name=?", new String[]{hvhdcl_list.get(i).toString()});
+                    }
+                    //清除数据，并关闭cursor，这一步是必须的，少了前两个，数据可能出错，少了后三个，程序可能FC
+                    hdcl_list.clear();
+                    hvhdcl_list.clear();
+                    cl_cur.close();
+                    hdcl_cur.close();
+                    hvhdcl_cur.close();
+
+                } else if (type == 2) {
+
+                    //当在短信界面下按下应用按钮时
+                    //遍历当前选项，获得需要隐藏短信的联系人名
+                    Cursor hdsms_cur = db.query(df_dbname, null, null, null, null, null, null);
+                    while (hdsms_cur.moveToNext()) {
+                        int hdname_cl = hdsms_cur.getColumnIndex("hd");
+                        hdsms_list.add(hdsms_cur.getString(hdname_cl));
+                    }
+                    //使用系统API，获得需要隐藏短信的联系人的电话号码
+                    Cursor getnum_cur = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
+                    while (getnum_cur.moveToNext()) {
+                        if (hdsms_list.contains(getnum_cur.getString(getnum_cur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)))) {
+                            String con_num = getnum_cur.getString(getnum_cur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                            hdsmsnum_list.add(con_num);
+                        }
+                    }
+                    //考虑有些号码前面被加了中国国际区号+86的情况
+                    int tmp = hdsmsnum_list.size();
+                    for (int i = 0; i < tmp; i++) {
+                        hdsmsnum_list.add(("+86" + hdsmsnum_list.get(i).toString()));
+                    }
+                    //将需要隐藏的短信从系统数据库移入hd_sms数据库
+                    Uri sms_uri = Uri.parse("content://sms/");
+                    Cursor sms_cur = getContentResolver().query(sms_uri, null, null, null, null);
+                    while (sms_cur.moveToNext()) {
+                        String real_num = sms_cur.getString(sms_cur.getColumnIndex("address"));
+                        if (hdsmsnum_list.contains(sms_cur.getString(sms_cur.getColumnIndex("address")))) {
+                            sms_values.put("address", sms_cur.getString(sms_cur.getColumnIndex("address")));
+                            sms_values.put("person", sms_cur.getInt(sms_cur.getColumnIndex("person")));
+                            sms_values.put("date", sms_cur.getString(sms_cur.getColumnIndex("date")));
+                            sms_values.put("read", sms_cur.getInt(sms_cur.getColumnIndex("read")));
+                            sms_values.put("status", sms_cur.getInt(sms_cur.getColumnIndex("status")));
+                            sms_values.put("type", sms_cur.getInt(sms_cur.getColumnIndex("type")));
+                            sms_values.put("body", sms_cur.getString(sms_cur.getColumnIndex("body")));
+                            db.insert("hd_sms", null, sms_values);
+                            getContentResolver().delete(sms_uri, "_id=?", new String[]{Integer.toString(sms_cur.getInt(sms_cur.getColumnIndex("_id")))});
+                        }
+                    }
+                    //获得hd_sms中的项的address属性
+                    Cursor hvhdsms_cur = db.query("hd_sms", null, null, null, null, null, null);
+                    while (hvhdsms_cur.moveToNext()) {
+                        hvhdsmsnum_list.add(hvhdsms_cur.getString(hvhdsms_cur.getColumnIndex("address")));
+                    }
+                    //将hd_sms表中包含但当前没有选择的项移入系统短信数据库
+                    if (hvhdsms_cur.moveToFirst()) {
+                        while (hvhdsms_cur.moveToNext()) {
+                            if (!hdsmsnum_list.contains(hvhdsms_cur.getString(hvhdsms_cur.getColumnIndex("address")))) {
+                                Log.v("hehe", hvhdsms_cur.getString(hvhdsms_cur.getColumnIndex("address")));
+                                resms_values.put("address", hvhdsms_cur.getString(hvhdsms_cur.getColumnIndex("address")));
+                                resms_values.put("person", hvhdsms_cur.getString(hvhdsms_cur.getColumnIndex("person")));
+                                resms_values.put("date", hvhdsms_cur.getString(hvhdsms_cur.getColumnIndex("date")));
+                                resms_values.put("read", hvhdsms_cur.getInt(hvhdsms_cur.getColumnIndex("read")));
+                                resms_values.put("status", hvhdsms_cur.getInt(hvhdsms_cur.getColumnIndex("status")));
+                                resms_values.put("type", hvhdsms_cur.getInt(hvhdsms_cur.getColumnIndex("type")));
+                                resms_values.put("body", hvhdsms_cur.getString(hvhdsms_cur.getColumnIndex("body")));
+                                getContentResolver().insert(sms_uri, resms_values);
+                            }
+                        }
+                    }
+                    //消除hd_sms表中已经不需要隐藏的项
+                    hvhdsmsnum_list.remove("0");
+                    for (int i = 0; i < hvhdsmsnum_list.size(); i++) {
+                        if (!hdsmsnum_list.contains(hvhdsmsnum_list.get(i).toString()))
+                            db.delete("hd_sms", "address=?", new String[]{hvhdsmsnum_list.get(i).toString()});
+                    }
+                    //数据清零
+                    hdsms_list.clear();
+                    hdsmsnum_list.clear();
+                    hvhdsmsnum_list.clear();
+                    hdsms_cur.close();
+                    getnum_cur.close();
+                    sms_cur.close();
+                    hvhdsms_cur.close();
+
                 } else {
                     Log.v("test", "Victory");
+
                 }
             }
         });

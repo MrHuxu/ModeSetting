@@ -49,14 +49,16 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_below="@+id/line"
-            android:layout_above="@+id/use"/>
+            android:layout_above="@+id/app_settings"
+            />
 
     <Button
             android:id="@+id/app_settings"
             android:layout_height="42dp"
             android:text="应用"
             android:layout_width="fill_parent"
-            android:layout_alignLeft="@+id/tv" android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true"
+            />
 
 
 </RelativeLayout>

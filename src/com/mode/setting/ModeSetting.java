@@ -30,6 +30,8 @@ public class ModeSetting extends Activity {
     int mode_count = 0;
     SQLiteDatabase db;
     ContentValues values = new ContentValues();
+    ContentValues cldf_values = new ContentValues();
+    ContentValues smsdf_values = new ContentValues();
 
     /**
      * Called when the activity is first created.
@@ -43,8 +45,23 @@ public class ModeSetting extends Activity {
 
         db = SQLiteDatabase.openOrCreateDatabase(this.getFilesDir().toString() + "/my.db3", null);
         db.execSQL("create table if not exists mode_db(_id integer primary key autoincrement, mode_name varchar(50))");
-        db.execSQL("create table if not exists hd_cl(_id integer primary key autoincrement, number integer, date integer, duration integer, type integer, new integer, name text, contactid integer, normalized_number varchar(50))");
-        db.execSQL("create table if not exists hd_sms(_id integer primary key autoincrement, thread_id integer, address text, person integer, date integer, read integer, status integer, type integer, body text)");
+        db.execSQL("create table if not exists hd_cl(_id integer primary key autoincrement,id integer, number integer, date integer, duration integer, type integer, new integer, name text, contactid integer, normalized_number varchar(50))");
+        //因为好像hd_cl表的第一行始终是没有用的，如果实际使用会导致结果错误。。。所以在这里给这张表初始化一行，number为0，姓名为null
+        Cursor dfcl_cur = db.query("hd_cl", null, null, null, null, null, null);
+        if (dfcl_cur.getCount() < 1) {
+            cldf_values.put("number", 0);
+            cldf_values.put("name", "null");
+            db.insert("hd_cl", null, cldf_values);
+        }
+        dfcl_cur.close();
+        db.execSQL("create table if not exists hd_sms(_id integer primary key autoincrement, address text, person integer, date integer, read integer, status integer, type integer, body text)");
+        Cursor dfsms_cur = db.query("hd_sms", null, null, null, null, null, null);
+        if (dfsms_cur.getCount() < 1) {
+            smsdf_values.put("address", 0);
+            smsdf_values.put("body", "null");
+            db.insert("hd_sms", null, smsdf_values);
+        }
+        dfsms_cur.close();
         Cursor cursor = db.rawQuery("select * from mode_db", null);
         while (cursor.moveToNext()) {
             if (cursor.getString(1) != "1") {
