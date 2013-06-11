@@ -55,6 +55,7 @@ public class ModeSetting extends Activity {
             db.insert("hd_cl", null, cldf_values);
         }
         dfcl_cur.close();
+        db.execSQL("create table if not exists hd_sw(_id integer primary key autoincrement,title varchar(50), screen integer)");
         //这里同样是给hd_sms第一行添加一个初始记录，防止出现恢复短信错误。。
         db.execSQL("create table if not exists hd_sms(_id integer primary key autoincrement, address text, person integer, date integer, read integer, status integer, type integer, body text)");
         Cursor dfsms_cur = db.query("hd_sms", null, null, null, null, null, null);
@@ -64,9 +65,6 @@ public class ModeSetting extends Activity {
             db.insert("hd_sms", null, smsdf_values);
         }
         dfsms_cur.close();
-
-        db.execSQL("create table if not exists hd_sw(_id integer primary key autoincrement, title varchar(50), screen integer)");
-
         db.execSQL("create table if not exists hd_dt(_id integer primary key autoincrement, hd varchar(50))");
         Cursor cursor = db.rawQuery("select * from mode_db", null);
         while (cursor.moveToNext()) {

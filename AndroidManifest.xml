@@ -13,7 +13,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="HideSetting"
+        <activity android:name=".HideSetting"
                   android:label="HideSetting">
         </activity>
         <activity android:name=".OptionList"
