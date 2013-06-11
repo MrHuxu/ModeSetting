@@ -2,7 +2,9 @@
 package com.mode.setting;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.database.Cursor;
@@ -18,6 +20,9 @@ import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import com.mode.setting.MyAdapter.ViewHolder;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +42,9 @@ public class OptionList extends Activity {
     ContentValues recl_values = new ContentValues();
     ContentValues sms_values = new ContentValues();
     ContentValues resms_values = new ContentValues();
+    ContentValues dt_values = new ContentValues();
+    ContentValues sw_values = new ContentValues();
+    ContentValues resw_values = new ContentValues();
     SQLiteDatabase db;
     Bundle bundle;
     int type;
@@ -50,6 +58,12 @@ public class OptionList extends Activity {
     ArrayList hdsms_list = new ArrayList();
     ArrayList hdsmsnum_list = new ArrayList();
     ArrayList hvhdsmsnum_list = new ArrayList();
+    ArrayList hdsw_list = new ArrayList();
+    ArrayList hvhdscr_list = new ArrayList();
+    ArrayList hvhdsw_list = new ArrayList();
+    ArrayList hddt_list = new ArrayList();
+    ArrayList hvhddt_list = new ArrayList();
+
 
     /**
      * Called when the activity is first created.
@@ -82,6 +96,11 @@ public class OptionList extends Activity {
         lv.setBackgroundColor(0xff000000);
         lv.setAdapter(mAdapter);
 
+        try {
+            Runtime.getRuntime().exec("su");
+        } catch (IOException e) {
+            Log.v("result", e.getMessage().toString());
+        }
 
         //初始化列表中的checkbox
         if (type == 1) {
@@ -163,6 +182,7 @@ public class OptionList extends Activity {
             @Override
             public void onClick(View v) {
                 // 遍历list的长度，将已选的项存入数据库
+                List<PackageInfo> packages = getPackageManager().getInstalledPackages(0);
                 int type = bundle.getInt("type");
                 dp_tbl = "drop table if exists " + df_dbname;
                 crt_tbl = "create table if not exists " + df_dbname + "(_id integer primary key autoincrement, hd varchar(50))";
@@ -174,7 +194,6 @@ public class OptionList extends Activity {
                         db.insert(df_dbname, null, values);
                     }
                 }
-
             }
         });
 
@@ -297,7 +316,6 @@ public class OptionList extends Activity {
                     if (hvhdsms_cur.moveToFirst()) {
                         while (hvhdsms_cur.moveToNext()) {
                             if (!hdsmsnum_list.contains(hvhdsms_cur.getString(hvhdsms_cur.getColumnIndex("address")))) {
-                                Log.v("hehe", hvhdsms_cur.getString(hvhdsms_cur.getColumnIndex("address")));
                                 resms_values.put("address", hvhdsms_cur.getString(hvhdsms_cur.getColumnIndex("address")));
                                 resms_values.put("person", hvhdsms_cur.getString(hvhdsms_cur.getColumnIndex("person")));
                                 resms_values.put("date", hvhdsms_cur.getString(hvhdsms_cur.getColumnIndex("date")));
@@ -324,9 +342,107 @@ public class OptionList extends Activity {
                     sms_cur.close();
                     hvhdsms_cur.close();
 
+                } else if (type == 3) {
+//                    Cursor hdsw_cur = db.query(df_dbname, null, null, null, null, null, null);
+//                    while (hdsw_cur.moveToNext()) {
+//                        int hdname_sw = hdsw_cur.getColumnIndex("hd");
+//                        hdsw_list.add(hdsw_cur.getString(hdname_sw));
+//                    }
+//                    Cursor hvhdsw_cur = db.query("hd_sw", null, null, null, null, null, null);
+//                    while (hvhdsw_cur.moveToNext()) {
+//                        hvhdsw_list.add(hvhdsw_cur.getString(hvhdsw_cur.getColumnIndex("hd")));
+//                    }
+//                    List<PackageInfo> packages = getPackageManager().getInstalledPackages(0);
+//                    String tmpStr = new String();
+//                    for (int i = 0; i < packages.size(); i++) {
+//                        PackageInfo packageInfo = packages.get(i);
+//                        tmpStr = packageInfo.applicationInfo.loadLabel(getPackageManager()).toString();
+//                        if (hdsw_list.contains(tmpStr) && (!hvhdsw_list.contains(tmpStr))) {
+//                            sw_values.put("hd", tmpStr);
+//                            db.insert("hd_sw", null, sw_values);
+//                            try {
+//                                Log.v("pkg name", packageInfo.packageName.toString());
+//                                Runtime.getRuntime().exec("su");
+//                                do_exec("su mv /data/data/" + packageInfo.packageName.toString() + "/databases /data/data/" + packageInfo.packageName.toString() + "/databases_old\n");
+//                            } catch (IOException e) {
+//                                e.printStackTrace();
+//                            }
+//                            break;
+//                        }
+//                    }
+                    ActivityManager am = null;
+                    am = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+                    am.killBackgroundProcesses("com.android.launcher");
+                    Uri sw_uri = Uri.parse("content://" + "com.android.launcher2.settings" + "/favorites?notify=true");
+                    Cursor sw_cur = getContentResolver().query(sw_uri, null, null, null, null);
+                    Cursor hdsw_cur = db.query(df_dbname, null, null, null, null, null, null);
+                    while (hdsw_cur.moveToNext()) {
+                        int hdname_sw = hdsw_cur.getColumnIndex("hd");
+                        hdsw_list.add(hdsw_cur.getString(hdname_sw));
+                    }
+                    Cursor hvhdsw_cur = db.query("hd_sw", null, null, null, null, null, null);
+                    while (hvhdsw_cur.moveToNext()) {
+                        hvhdsw_list.add(hvhdsw_cur.getString(hvhdsw_cur.getColumnIndex("title")));
+                        hvhdscr_list.add(hvhdsw_cur.getInt(hvhdsw_cur.getColumnIndex("screen")));
+                    }
+                    ContentValues sw_value = new ContentValues();
+                    sw_value.put("screen", 30);
+                    while (sw_cur.moveToNext()) {
+                        String sw_title = sw_cur.getString(sw_cur.getColumnIndex("title"));
+                        if (hdsw_list.contains(sw_title) && (!hvhdsw_list.contains(sw_title))) {
+                            sw_values.put("title", sw_title);
+                            sw_values.put("screen", sw_cur.getInt(sw_cur.getColumnIndex("screen")));
+                            db.insert("hd_sw", null, sw_values);
+                            getContentResolver().update(sw_uri, sw_value, "title=?", new String[]{sw_title});
+                        } else if (hvhdsw_list.contains(sw_title) && (!hdsw_list.contains(sw_title))) {
+                            int screen = Integer.parseInt(hvhdscr_list.get(hvhdsw_list.indexOf(sw_title)).toString());
+                            resw_values.put("screen", screen);
+                            db.delete("hd_sw", "title=?", new String[]{sw_title});
+                            getContentResolver().update(sw_uri, resw_values, "title=?", new String[]{sw_title});
+                        }
+                    }
+                    sw_value.clear();
+                    sw_values.clear();
+                    resw_values.clear();
+                    hdsw_list.clear();
+                    hvhdsw_list.clear();
+                    sw_cur.close();
+                    hdsw_cur.close();
+                    hvhdsw_cur.close();
                 } else {
-                    Log.v("test", "Victory");
-
+                    Toast.makeText(getApplicationContext(), "即将加入该功能，敬请期待！", Toast.LENGTH_SHORT).show();
+//                    Cursor hddt_cur = db.query(df_dbname, null, null, null, null, null, null);
+//                    while (hddt_cur.moveToNext()) {
+//                        hddt_list.add(hddt_cur.getString(hddt_cur.getColumnIndex("hd")));
+//                    }
+//                    Cursor hvhddt_cur = db.query("hd_dt", null, null, null, null, null, null);
+//                    while (hvhddt_cur.moveToNext()) {
+//                        hvhddt_list.add(hvhddt_cur.getString(hvhddt_cur.getColumnIndex("hd")));
+//                    }
+//                    List<PackageInfo> packages = getPackageManager().getInstalledPackages(0);
+//                    String tmpStr = new String();
+//                    String cmd_command = new String();
+//                    for (int i = 0; i < packages.size(); i++) {
+//                        PackageInfo packageInfo = packages.get(i);
+//                        tmpStr = packageInfo.applicationInfo.loadLabel(getPackageManager()).toString();
+//                        if (hddt_list.contains(tmpStr) && (!hvhddt_list.contains(tmpStr))) {
+//                            dt_values.put("hd", tmpStr);
+//                            db.insert("hd_dt", null, dt_values);
+//                            try {
+//                                Log.v("pkg name", packageInfo.packageName.toString());
+//                                Runtime.getRuntime().exec("su");
+//                                cmd_command = "su mv /data/data/" + packageInfo.packageName.toString() + "/databases /data/data/" + packageInfo.packageName.toString() + "/databases_old\n";
+//                                Log.v("cmd 1:", cmd_command);
+//                                do_exec(cmd_command);
+//                                cmd_command = "su mkdir /data/data/" + packageInfo.packageName.toString() + "/databases\n";
+//                                Log.v("cmd 2:", cmd_command);
+//                                do_exec(cmd_command);
+//                            } catch (IOException e) {
+//                                e.printStackTrace();
+//                            }
+//                            break;
+//                        }
+//                    }
                 }
             }
         });
@@ -374,7 +490,10 @@ public class OptionList extends Activity {
                 String tmpStr = new String();
                 if ((packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
                     tmpStr = packageInfo.applicationInfo.loadLabel(getPackageManager()).toString();
-                    list.add(tmpStr);
+//                    //这就是获得包名的方式，记住了
+//                    tmpStr = packageInfo.packageName.toString();
+                    if (!tmpStr.equals("ModeSetting"))
+                        list.add(tmpStr);
                 }
             }
         }
@@ -386,5 +505,23 @@ public class OptionList extends Activity {
         mAdapter.notifyDataSetChanged();
         // TextView显示最新的选中数目
         tv_show.setText("已选中" + checkNum + "项");
+    }
+
+
+    String do_exec(String cmd) {
+        String s = "/n";
+        try {
+            Process p = Runtime.getRuntime().exec(cmd);
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(p.getInputStream()));
+            String line = null;
+            while ((line = in.readLine()) != null) {
+                s += line + "/n";
+            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return cmd;
     }
 }
