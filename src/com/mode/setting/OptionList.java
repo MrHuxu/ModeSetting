@@ -382,7 +382,7 @@ public class OptionList extends Activity {
                     hvhdsw_cur.close();
                 } else {
                     Toast.makeText(getApplicationContext(), "即将加入该功能，敬请期待！", Toast.LENGTH_SHORT).show();
-                    /*这一部分其实一开始就有想法了，通过查看/data/data分区的文件命名方式
+                    /*这一部分其实一开始就有想法了，通过查看/data/data分区的文件命名方式发现
                     一般程序的数据都放在/data/data/包名/databases文件夹下面，只要把这个文件夹更名，程序就无法读出数据
                     通过re管理器的测试也证实了这一点，但是在实际运行时，始终不成功
                     后来才发现是google根本没有提供/data/data的写权限，所以这个模块编写失败Orz*/

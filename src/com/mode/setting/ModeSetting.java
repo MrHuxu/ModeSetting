@@ -80,6 +80,7 @@ public class ModeSetting extends Activity {
         }
 
         Button add = (Button) findViewById(R.id.add);
+        add.setBackgroundColor(0);
         newItem = new AlertDialog.Builder(this);
         //Here is a alert dialog to add a new item into the spinner
         add.setOnClickListener(new View.OnClickListener() {
@@ -114,6 +115,7 @@ public class ModeSetting extends Activity {
 
         final Button set = (Button) findViewById(R.id.set);
         final Button delete = (Button) findViewById(R.id.delete);
+        delete.setBackgroundColor(0);
 
         spinner.setSelection(0, true);
         chooseItem = spinner.getSelectedItem().toString();
