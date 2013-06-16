@@ -58,7 +58,7 @@ public class MyAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
         if (convertView == null) {
-            // 获得ViewH older对象
+            // 获得View Holder对象
             holder = new ViewHolder();
             // 导入布局并赋值给convertview
             convertView = inflater.inflate(R.layout.listviewitem, null);

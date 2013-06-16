@@ -115,6 +115,7 @@ public class OptionList extends Activity {
                 checkNum++;
             }
         }
+        df_list.clear();
         df_cursor.close();
         dataChanged();
 
@@ -335,9 +336,13 @@ public class OptionList extends Activity {
                     hvhdsms_cur.close();
 
                 } else if (type == 3) {
+                    //通过这三行代码，实现桌面进程的终止，从而强迫其刷新
                     ActivityManager am = null;
                     am = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
                     am.killBackgroundProcesses("com.android.launcher");
+                    /*获取launcher数据库内容的uri
+                    下面的内容和之前的类似，不过隐藏时并不是从数据库中删除，而是写入一个不存在的screen
+                    如果删除的话，系统launcher会在扫描程序列表之后自动建立一个新的记录*/
                     Uri sw_uri = Uri.parse("content://" + "com.android.launcher2.settings" + "/favorites?notify=true");
                     Cursor sw_cur = getContentResolver().query(sw_uri, null, null, null, null);
                     Cursor hdsw_cur = db.query(df_dbname, null, null, null, null, null, null);
@@ -351,6 +356,7 @@ public class OptionList extends Activity {
                         hvhdscr_list.add(hvhdsw_cur.getInt(hvhdsw_cur.getColumnIndex("screen")));
                     }
                     ContentValues sw_value = new ContentValues();
+                    //写入一个不存在的screen使图标隐藏
                     sw_value.put("screen", 30);
                     while (sw_cur.moveToNext()) {
                         String sw_title = sw_cur.getString(sw_cur.getColumnIndex("title"));
@@ -376,6 +382,10 @@ public class OptionList extends Activity {
                     hvhdsw_cur.close();
                 } else {
                     Toast.makeText(getApplicationContext(), "即将加入该功能，敬请期待！", Toast.LENGTH_SHORT).show();
+                    /*这一部分其实一开始就有想法了，通过查看/data/data分区的文件命名方式
+                    一般程序的数据都放在/data/data/包名/databases文件夹下面，只要把这个文件夹更名，程序就无法读出数据
+                    通过re管理器的测试也证实了这一点，但是在实际运行时，始终不成功
+                    后来才发现是google根本没有提供/data/data的写权限，所以这个模块编写失败Orz*/
 //                    Cursor hddt_cur = db.query(df_dbname, null, null, null, null, null, null);
 //                    while (hddt_cur.moveToNext()) {
 //                        hddt_list.add(hddt_cur.getString(hddt_cur.getColumnIndex("hd")));
