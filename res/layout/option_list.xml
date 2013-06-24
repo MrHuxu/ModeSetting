@@ -51,6 +51,7 @@
             android:layout_height="fill_parent"
             android:layout_below="@+id/line"
             android:layout_above="@+id/app_settings"
+            android:fastScrollEnabled="true"
             />
 
     <Button

@@ -3,7 +3,7 @@
   <component name="AndroidDesignerProfile">
     <option name="fullProfile">
       <profile>
-        <option name="device" value="3.7in WVGA (Nexus One)" />
+        <option name="device" value="2.7in QVGA" />
         <option name="deviceConfiguration" value="Portrait" />
         <option name="targetHashString" value="android-10" />
         <option name="theme" value="Theme" />
@@ -40,16 +40,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="76fdfe98-f937-4f3d-8c36-085cbdbda189" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mode/setting/ModeSetting.java" afterPath="$PROJECT_DIR$/src/com/mode/setting/ModeSetting.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mode/setting/OptionList.java" afterPath="$PROJECT_DIR$/src/com/mode/setting/OptionList.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/main.xml" afterPath="$PROJECT_DIR$/res/layout/main.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/option_list.xml" afterPath="$PROJECT_DIR$/res/layout/option_list.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project.properties" afterPath="$PROJECT_DIR$/project.properties" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="ModeSetting.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/main.xml" changelist="76fdfe98-f937-4f3d-8c36-085cbdbda189" time="1371348666241" ignored="false" />
-    <file path="/Dummy.txt" changelist="76fdfe98-f937-4f3d-8c36-085cbdbda189" time="1371350709407" ignored="false" />
+    <file path="/Dummy.txt" changelist="76fdfe98-f937-4f3d-8c36-085cbdbda189" time="1372033387740" ignored="false" />
     <file path="/ModeSetting.java" changelist="76fdfe98-f937-4f3d-8c36-085cbdbda189" time="1371348453469" ignored="false" />
     <file path="/HideSetting.java" changelist="76fdfe98-f937-4f3d-8c36-085cbdbda189" time="1371349447529" ignored="false" />
     <file path="/ContactList.java" changelist="76fdfe98-f937-4f3d-8c36-085cbdbda189" time="1367992119951" ignored="false" />
@@ -58,14 +57,14 @@
     <file path="/AndroidManifest.xml" changelist="76fdfe98-f937-4f3d-8c36-085cbdbda189" time="1368805421303" ignored="false" />
     <file path="/Apptmplist.java" changelist="76fdfe98-f937-4f3d-8c36-085cbdbda189" time="1367861566847" ignored="false" />
     <file path="/tmplist.xml" changelist="76fdfe98-f937-4f3d-8c36-085cbdbda189" time="1367861507856" ignored="false" />
-    <file path="/option_list.xml" changelist="76fdfe98-f937-4f3d-8c36-085cbdbda189" time="1371347969275" ignored="false" />
+    <file path="/option_list.xml" changelist="76fdfe98-f937-4f3d-8c36-085cbdbda189" time="1372033447856" ignored="false" />
     <file path="/OptionList.java" changelist="76fdfe98-f937-4f3d-8c36-085cbdbda189" time="1371349186100" ignored="false" />
     <file path="/hidesetting.xml" changelist="76fdfe98-f937-4f3d-8c36-085cbdbda189" time="1368091507191" ignored="false" />
     <file path="/a.xml" changelist="76fdfe98-f937-4f3d-8c36-085cbdbda189" time="1368539873887" ignored="false" />
     <file path="/a.dummy" changelist="76fdfe98-f937-4f3d-8c36-085cbdbda189" time="1368357051387" ignored="false" />
     <file path="$APPLICATION_HOME_DIR$/plugins/android/lib/android.jar!/org/jetbrains/android/android.xsd" changelist="76fdfe98-f937-4f3d-8c36-085cbdbda189" time="1370968778888" ignored="false" />
     <file path="/HideService.java" changelist="76fdfe98-f937-4f3d-8c36-085cbdbda189" time="1368805763372" ignored="false" />
-    <file path="/fragment.java" changelist="76fdfe98-f937-4f3d-8c36-085cbdbda189" time="1370353087946" ignored="false" />
+    <file path="/fragment.java" changelist="76fdfe98-f937-4f3d-8c36-085cbdbda189" time="1372033500791" ignored="false" />
     <file path="$PROJECT_DIR$/../KillProcess/res/layout/main.xml" changelist="76fdfe98-f937-4f3d-8c36-085cbdbda189" time="1370353085075" ignored="false" />
     <file path="$PROJECT_DIR$/../KillProcess/res/values/strings.xml" changelist="76fdfe98-f937-4f3d-8c36-085cbdbda189" time="1370353085076" ignored="false" />
     <file path="$PROJECT_DIR$/../KillProcess/build.xml" changelist="76fdfe98-f937-4f3d-8c36-085cbdbda189" time="1370353085076" ignored="false" />
@@ -98,6 +97,7 @@
     <disable_hints />
   </component>
   <component name="DebuggerManager">
+    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
@@ -135,7 +135,6 @@
       </breakpoint>
     </breakpoint_any>
     <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true" />
-    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_rules />
     <ui_properties />
   </component>
@@ -145,10 +144,34 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="OptionList.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="OptionList.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/mode/setting/OptionList.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="284" column="57" selection-start="13414" selection-end="13414" vertical-scroll-proportion="-0.8965517">
+            <state line="3" column="18" selection-start="66" selection-end="66" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="listviewitem.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/layout/listviewitem.xml">
+          <provider editor-type-id="android-designer">
+            <state />
+          </provider>
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="11" column="36" selection-start="489" selection-end="489" vertical-scroll-proportion="-3.8703704">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="option_list.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/layout/option_list.xml">
+          <provider editor-type-id="android-designer">
+            <state />
+          </provider>
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="53" column="44" selection-start="1851" selection-end="1851" vertical-scroll-proportion="-8.092592">
               <folding />
             </state>
           </provider>
@@ -156,13 +179,13 @@
       </file>
       <file leaf-file-name="main.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/res/layout/main.xml">
+          <provider editor-type-id="android-designer">
+            <state />
+          </provider>
           <provider selected="true" editor-type-id="text-editor">
             <state line="23" column="42" selection-start="1068" selection-end="1068" vertical-scroll-proportion="0.0">
               <folding />
             </state>
-          </provider>
-          <provider editor-type-id="android-designer">
-            <state />
           </provider>
         </entry>
       </file>
@@ -184,10 +207,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ModeSetting.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="ModeSetting.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/mode/setting/ModeSetting.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="117" column="35" selection-start="5104" selection-end="5104" vertical-scroll-proportion="0.0">
+            <state line="22" column="86" selection-start="594" selection-end="594" vertical-scroll-proportion="0.4935065">
               <folding />
             </state>
           </provider>
@@ -223,18 +246,19 @@
         <option value="$PROJECT_DIR$/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/src/com/mode/setting/MyAdapter.java" />
         <option value="$PROJECT_DIR$/res/layout/listviewitem.xml" />
-        <option value="$PROJECT_DIR$/res/layout/option_list.xml" />
         <option value="$PROJECT_DIR$/res/layout/main.xml" />
         <option value="$PROJECT_DIR$/src/com/mode/setting/ModeSetting.java" />
         <option value="$PROJECT_DIR$/src/com/mode/setting/OptionList.java" />
         <option value="$PROJECT_DIR$/src/com/mode/setting/HideSetting.java" />
+        <option value="$PROJECT_DIR$/res/layout/option_list.xml" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
+    <option name="x" value="-3" />
     <option name="y" value="25" />
-    <option name="width" value="1366" />
-    <option name="height" value="743" />
+    <option name="width" value="1372" />
+    <option name="height" value="745" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -262,6 +286,8 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -350,19 +376,17 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="project.structure.last.edited" value="Project" />
     <property name="GoToFile.includeJavaFiles" value="false" />
-    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.proportion" value="0.15" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="MemberChooser.sorted" value="false" />
     <property name="recentsLimit" value="5" />
-    <property name="options.lastSelected" value="editor.preferences.appearance" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../ShellTest" />
+    <property name="options.lastSelected" value="reference.idesettings.emmet" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="AndroidLayoutSelectedEditor" value="text-editor" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="123456789012" />
@@ -579,33 +603,33 @@
     <option name="totallyTimeSpent" value="4843000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="25" width="1366" height="743" extended-state="0" />
+    <frame x="-3" y="25" width="1372" height="745" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32419354" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32852808" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32826748" sideWeight="0.67741936" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.64991623" sideWeight="0.4969605" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.5394958" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.6453782" sideWeight="0.50303954" order="9" side_tool="false" content_ui="tabs" x="25" y="282" width="1316" height="199" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2035061" sideWeight="0.6812816" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20333838" sideWeight="0.4605042" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31871837" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32826748" sideWeight="0.6706282" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.67903227" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32826748" sideWeight="0.6706282" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32826748" sideWeight="0.67741936" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32663316" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.539629" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.67903227" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39865997" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -736,46 +760,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/option_list.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="39" selection-start="450" selection-end="450" vertical-scroll-proportion="0.37328094">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/listviewitem.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="36" selection-start="489" selection-end="489" vertical-scroll-proportion="0.41060904">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/main.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state line="23" column="42" selection-start="1068" selection-end="1068" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mode/setting/MyAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="60" column="23" selection-start="1494" selection-end="1494" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mode/setting/ModeSetting.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="117" column="35" selection-start="5104" selection-end="5104" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -787,9 +777,43 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/listviewitem.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="36" selection-start="489" selection-end="489" vertical-scroll-proportion="-3.8703704">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/option_list.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="53" column="44" selection-start="1851" selection-end="1851" vertical-scroll-proportion="-8.092592">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mode/setting/MyAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="60" column="23" selection-start="1494" selection-end="1494" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/mode/setting/OptionList.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="284" column="57" selection-start="13414" selection-end="13414" vertical-scroll-proportion="-0.8965517">
+        <state line="3" column="18" selection-start="66" selection-end="66" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mode/setting/ModeSetting.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="22" column="86" selection-start="594" selection-end="594" vertical-scroll-proportion="0.4935065">
           <folding />
         </state>
       </provider>
@@ -834,7 +858,7 @@
       </state>
       <state key="JdkListConfigurable.UI">
         <settings>
-          <last-edited>1.7</last-edited>
+          <last-edited>1.7 (1)</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
